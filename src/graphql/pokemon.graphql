@@ -1,0 +1,35 @@
+type Pokemon {
+    height: Int
+    id: Int
+    order: Int
+    weight: Int
+    species_id: Species
+    
+}
+
+type Species {
+    id: Int
+    identifier: String
+    color_id: Color
+    shape_id: Shape
+    habitat_id: Habitat
+}
+
+type Color {
+    id: Int
+    identifier: String
+}
+
+type Shape {
+    id: Int
+    identifier: String
+}
+
+type Habitat {
+    id: Int
+    identifier: String
+}
+
+type Query {
+    pokemons: [Pokemon]
+}

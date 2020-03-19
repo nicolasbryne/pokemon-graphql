@@ -1,0 +1,1343 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../pokedex.sqlite"
+}
+
+model pokemon_habitats {
+  id              Int               @default(autoincrement()) @id
+  identifier      String
+  pokemon_species pokemon_species[]
+}
+
+model encounter_methods {
+  id              Int               @default(autoincrement()) @id
+  identifier      String            @unique
+  encounter_slots encounter_slots[]
+}
+
+model item_fling_effects {
+  id    Int     @default(autoincrement()) @id
+  items items[]
+}
+
+model regions {
+  id          Int           @default(autoincrement()) @id
+  identifier  String
+  pokedexes   pokedexes[]
+  locations   locations[]
+  generations generations[]
+}
+
+model contest_effects {
+  appeal String
+  id     Int     @default(autoincrement()) @id
+  jam    String
+  moves  moves[]
+}
+
+model pokemon_shapes {
+  id              Int               @default(autoincrement()) @id
+  identifier      String
+  pokemon_species pokemon_species[]
+}
+
+model move_meta_ailments {
+  id         Int         @default(autoincrement()) @id
+  identifier String      @unique
+  move_meta  move_meta[]
+}
+
+model languages {
+  id         Int     @default(autoincrement()) @id
+  identifier String
+  iso3166    String
+  iso639     String
+  official   Boolean
+  order      Int?
+
+  @@index([official], name: "ix_languages_official")
+}
+
+model move_damage_classes {
+  id         Int     @default(autoincrement()) @id
+  identifier String
+  stats      stats[]
+  types      types[]
+  moves      moves[]
+}
+
+model pokeathlon_stats {
+  id         Int    @default(autoincrement()) @id
+  identifier String
+}
+
+model move_flags {
+  id         Int    @default(autoincrement()) @id
+  identifier String
+}
+
+model pokemon_move_methods {
+  id         Int    @default(autoincrement()) @id
+  identifier String
+}
+
+model item_flags {
+  id         Int    @default(autoincrement()) @id
+  identifier String
+}
+
+model pokemon_colors {
+  id              Int               @default(autoincrement()) @id
+  identifier      String
+  pokemon_species pokemon_species[]
+}
+
+model move_battle_styles {
+  id         Int    @default(autoincrement()) @id
+  identifier String
+}
+
+model item_pockets {
+  id              Int               @default(autoincrement()) @id
+  identifier      String
+  item_categories item_categories[]
+}
+
+model growth_rates {
+  formula         String
+  id              Int               @default(autoincrement()) @id
+  identifier      String
+  pokemon_species pokemon_species[]
+}
+
+model move_meta_categories {
+  id         Int         @default(autoincrement()) @id
+  identifier String      @unique
+  move_meta  move_meta[]
+}
+
+model contest_types {
+  id                                             Int       @default(autoincrement()) @id
+  identifier                                     String
+  natures_contest_typesTonatures_hates_flavor_id natures[] @relation("contest_typesTonatures_hates_flavor_id")
+  natures_contest_typesTonatures_likes_flavor_id natures[] @relation("contest_typesTonatures_likes_flavor_id")
+  moves                                          moves[]
+}
+
+model move_effects {
+  id                    Int                     @default(autoincrement()) @id
+  moves                 moves[]
+  move_effect_changelog move_effect_changelog[]
+  move_changelog        move_changelog[]
+}
+
+model egg_groups {
+  id         Int    @default(autoincrement()) @id
+  identifier String
+}
+
+model super_contest_effects {
+  appeal String
+  id     Int     @default(autoincrement()) @id
+  moves  moves[]
+}
+
+model evolution_triggers {
+  id                Int                 @default(autoincrement()) @id
+  identifier        String
+  pokemon_evolution pokemon_evolution[]
+}
+
+model encounter_conditions {
+  id                         Int                          @default(autoincrement()) @id
+  identifier                 String
+  encounter_condition_values encounter_condition_values[]
+}
+
+model move_targets {
+  id         Int     @default(autoincrement()) @id
+  identifier String
+  moves      moves[]
+}
+
+model berry_firmness {
+  id         Int       @default(autoincrement()) @id
+  identifier String
+  berries    berries[]
+}
+
+model move_battle_style_prose {
+  name                 String
+  /// This used to be part of a relation to languages
+  local_language_id    Int
+  /// This used to be part of a relation to move_battle_styles
+  move_battle_style_id Int
+
+  @@id([move_battle_style_id, local_language_id])
+  @@index([name], name: "ix_move_battle_style_prose_name")
+}
+
+model growth_rate_prose {
+  name              String
+  /// This used to be part of a relation to growth_rates
+  growth_rate_id    Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([growth_rate_id, local_language_id])
+  @@index([name], name: "ix_growth_rate_prose_name")
+}
+
+model item_pocket_names {
+  name              String
+  /// This used to be part of a relation to item_pockets
+  item_pocket_id    Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([item_pocket_id, local_language_id])
+  @@index([name], name: "ix_item_pocket_names_name")
+}
+
+model move_effect_prose {
+  effect            String?
+  short_effect      String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to move_effects
+  move_effect_id    Int
+
+  @@id([move_effect_id, local_language_id])
+}
+
+model language_names {
+  name              String
+  /// This used to be part of a relation to languages
+  language_id       Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([language_id, local_language_id])
+  @@index([name], name: "ix_language_names_name")
+}
+
+model pokemon_color_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to pokemon_colors
+  pokemon_color_id  Int
+
+  @@id([pokemon_color_id, local_language_id])
+  @@index([name], name: "ix_pokemon_color_names_name")
+}
+
+model egg_group_prose {
+  name              String
+  /// This used to be part of a relation to egg_groups
+  egg_group_id      Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([egg_group_id, local_language_id])
+  @@index([name], name: "ix_egg_group_prose_name")
+}
+
+model item_categories {
+  id         Int          @default(autoincrement()) @id
+  identifier String
+  pocket_id  item_pockets
+  items      items[]
+}
+
+model pokemon_move_method_prose {
+  description            String?
+  name                   String?
+  /// This used to be part of a relation to languages
+  local_language_id      Int
+  /// This used to be part of a relation to pokemon_move_methods
+  pokemon_move_method_id Int
+
+  @@id([pokemon_move_method_id, local_language_id])
+  @@index([name], name: "ix_pokemon_move_method_prose_name")
+}
+
+model super_contest_effect_prose {
+  flavor_text             String
+  /// This used to be part of a relation to languages
+  local_language_id       Int
+  /// This used to be part of a relation to super_contest_effects
+  super_contest_effect_id Int
+
+  @@id([super_contest_effect_id, local_language_id])
+}
+
+model move_meta_category_prose {
+  description           String
+  /// This used to be part of a relation to languages
+  local_language_id     Int
+  /// This used to be part of a relation to move_meta_categories
+  move_meta_category_id Int
+
+  @@id([move_meta_category_id, local_language_id])
+}
+
+model region_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to regions
+  region_id         Int
+
+  @@id([region_id, local_language_id])
+  @@index([name], name: "ix_region_names_name")
+}
+
+model move_meta_ailment_names {
+  name                 String
+  /// This used to be part of a relation to languages
+  local_language_id    Int
+  /// This used to be part of a relation to move_meta_ailments
+  move_meta_ailment_id Int
+
+  @@id([move_meta_ailment_id, local_language_id])
+  @@index([name], name: "ix_move_meta_ailment_names_name")
+}
+
+model berry_firmness_names {
+  name              String
+  /// This used to be part of a relation to berry_firmness
+  berry_firmness_id Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([berry_firmness_id, local_language_id])
+  @@index([name], name: "ix_berry_firmness_names_name")
+}
+
+model pokeathlon_stat_names {
+  name               String
+  /// This used to be part of a relation to languages
+  local_language_id  Int
+  /// This used to be part of a relation to pokeathlon_stats
+  pokeathlon_stat_id Int
+
+  @@id([pokeathlon_stat_id, local_language_id])
+  @@index([name], name: "ix_pokeathlon_stat_names_name")
+}
+
+model contest_effect_prose {
+  effect            String?
+  flavor_text       String?
+  /// This used to be part of a relation to contest_effects
+  contest_effect_id Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([contest_effect_id, local_language_id])
+}
+
+model pokemon_habitat_names {
+  name               String
+  /// This used to be part of a relation to languages
+  local_language_id  Int
+  /// This used to be part of a relation to pokemon_habitats
+  pokemon_habitat_id Int
+
+  @@id([pokemon_habitat_id, local_language_id])
+  @@index([name], name: "ix_pokemon_habitat_names_name")
+}
+
+model experience {
+  experience     Int
+  level          Int
+  /// This used to be part of a relation to growth_rates
+  growth_rate_id Int
+
+  @@id([growth_rate_id, level])
+}
+
+model pokedexes {
+  id             Int              @default(autoincrement()) @id
+  identifier     String
+  region_id      regions?
+  generations    generations[]
+  version_groups version_groups[]
+}
+
+model encounter_condition_prose {
+  name                   String
+  /// This used to be part of a relation to encounter_conditions
+  encounter_condition_id Int
+  /// This used to be part of a relation to languages
+  local_language_id      Int
+
+  @@id([encounter_condition_id, local_language_id])
+  @@index([name], name: "ix_encounter_condition_prose_name")
+}
+
+model move_target_prose {
+  description       String?
+  name              String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to move_targets
+  move_target_id    Int
+
+  @@id([move_target_id, local_language_id])
+  @@index([name], name: "ix_move_target_prose_name")
+}
+
+model move_flag_prose {
+  description       String?
+  name              String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to move_flags
+  move_flag_id      Int
+
+  @@id([move_flag_id, local_language_id])
+  @@index([name], name: "ix_move_flag_prose_name")
+}
+
+model encounter_condition_values {
+  id                     Int                  @default(autoincrement()) @id
+  identifier             String
+  is_default             Boolean
+  encounter_condition_id encounter_conditions
+}
+
+model contest_type_names {
+  color             String?
+  flavor            String?
+  name              String?
+  /// This used to be part of a relation to contest_types
+  contest_type_id   Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([contest_type_id, local_language_id])
+  @@index([name], name: "ix_contest_type_names_name")
+}
+
+model pokemon_shape_prose {
+  awesome_name      String?
+  name              String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to pokemon_shapes
+  pokemon_shape_id  Int
+
+  @@id([pokemon_shape_id, local_language_id])
+  @@index([name], name: "ix_pokemon_shape_prose_name")
+}
+
+model encounter_method_prose {
+  name                String
+  /// This used to be part of a relation to encounter_methods
+  encounter_method_id Int
+  /// This used to be part of a relation to languages
+  local_language_id   Int
+
+  @@id([encounter_method_id, local_language_id])
+  @@index([name], name: "ix_encounter_method_prose_name")
+}
+
+model move_damage_class_prose {
+  description          String?
+  name                 String?
+  /// This used to be part of a relation to languages
+  local_language_id    Int
+  /// This used to be part of a relation to move_damage_classes
+  move_damage_class_id Int
+
+  @@id([move_damage_class_id, local_language_id])
+  @@index([name], name: "ix_move_damage_class_prose_name")
+}
+
+model item_fling_effect_prose {
+  effect               String
+  /// This used to be part of a relation to item_fling_effects
+  item_fling_effect_id Int
+  /// This used to be part of a relation to languages
+  local_language_id    Int
+
+  @@id([item_fling_effect_id, local_language_id])
+}
+
+model evolution_trigger_prose {
+  name                 String
+  /// This used to be part of a relation to evolution_triggers
+  evolution_trigger_id Int
+  /// This used to be part of a relation to languages
+  local_language_id    Int
+
+  @@id([evolution_trigger_id, local_language_id])
+  @@index([name], name: "ix_evolution_trigger_prose_name")
+}
+
+model locations {
+  id                Int                 @default(autoincrement()) @id
+  identifier        String
+  region_id         regions?
+  location_areas    location_areas[]
+  pokemon_evolution pokemon_evolution[]
+}
+
+model item_flag_prose {
+  description       String?
+  name              String?
+  /// This used to be part of a relation to item_flags
+  item_flag_id      Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([item_flag_id, local_language_id])
+  @@index([name], name: "ix_item_flag_prose_name")
+}
+
+model stats {
+  id                                       Int                  @default(autoincrement()) @id
+  identifier                               String
+  is_battle_only                           Boolean
+  damage_class_id                          move_damage_classes?
+  stat_hints                               stat_hints[]
+  natures_natures_decreased_stat_idTostats natures[]            @relation("natures_decreased_stat_idTostats")
+  natures_natures_increased_stat_idTostats natures[]            @relation("natures_increased_stat_idTostats")
+}
+
+model item_category_prose {
+  name              String
+  /// This used to be part of a relation to item_categories
+  item_category_id  Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([item_category_id, local_language_id])
+  @@index([name], name: "ix_item_category_prose_name")
+}
+
+model location_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to locations
+  location_id       Int
+
+  @@id([location_id, local_language_id])
+  @@index([name], name: "ix_location_names_name")
+}
+
+model items {
+  cost                                                       Int
+  fling_power                                                Int?
+  id                                                         Int                 @default(autoincrement()) @id
+  identifier                                                 String
+  category_id                                                item_categories
+  fling_effect_id                                            item_fling_effects?
+  evolution_chains                                           evolution_chains[]
+  berries                                                    berries[]
+  pokemon_evolution_itemsTopokemon_evolution_held_item_id    pokemon_evolution[] @relation("itemsTopokemon_evolution_held_item_id")
+  pokemon_evolution_itemsTopokemon_evolution_trigger_item_id pokemon_evolution[] @relation("itemsTopokemon_evolution_trigger_item_id")
+  machines                                                   machines[]
+}
+
+model stat_hints {
+  gene_mod_5 Int
+  id         Int   @default(autoincrement()) @id
+  stat_id    stats
+
+  @@index([gene_mod_5], name: "ix_stat_hints_gene_mod_5")
+}
+
+model pokedex_prose {
+  description       String?
+  name              String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to pokedexes
+  pokedex_id        Int
+
+  @@id([pokedex_id, local_language_id])
+  @@index([name], name: "ix_pokedex_prose_name")
+}
+
+model location_areas {
+  game_index  Int
+  id          Int          @default(autoincrement()) @id
+  identifier  String?
+  location_id locations
+  encounters  encounters[]
+}
+
+model stat_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to stats
+  stat_id           Int
+
+  @@id([stat_id, local_language_id])
+  @@index([name], name: "ix_stat_names_name")
+}
+
+model generations {
+  id                   Int               @default(autoincrement()) @id
+  identifier           String
+  canonical_pokedex_id pokedexes
+  main_region_id       regions
+  types                types[]
+  version_groups       version_groups[]
+  abilities            abilities[]
+  moves                moves[]
+  pokemon_species      pokemon_species[]
+}
+
+model encounter_condition_value_prose {
+  name                         String
+  /// This used to be part of a relation to encounter_condition_values
+  encounter_condition_value_id Int
+  /// This used to be part of a relation to languages
+  local_language_id            Int
+
+  @@id([encounter_condition_value_id, local_language_id])
+  @@index([name], name: "ix_encounter_condition_value_prose_name")
+}
+
+model natures {
+  id                Int           @default(autoincrement()) @id
+  identifier        String
+  decreased_stat_id stats         @relation("natures_decreased_stat_idTostats")
+  hates_flavor_id   contest_types @relation("contest_typesTonatures_hates_flavor_id")
+  increased_stat_id stats         @relation("natures_increased_stat_idTostats")
+  likes_flavor_id   contest_types @relation("contest_typesTonatures_likes_flavor_id")
+}
+
+model location_area_prose {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to location_areas
+  location_area_id  Int
+
+  @@id([location_area_id, local_language_id])
+  @@index([name], name: "ix_location_area_prose_name")
+}
+
+model generation_names {
+  name              String
+  /// This used to be part of a relation to generations
+  generation_id     Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([generation_id, local_language_id])
+  @@index([name], name: "ix_generation_names_name")
+}
+
+model types {
+  id              Int                  @default(autoincrement()) @id
+  identifier      String
+  damage_class_id move_damage_classes?
+  generation_id   generations
+  moves           moves[]
+  berries         berries[]
+  move_changelog  move_changelog[]
+  pokemon_types   pokemon_types[]
+}
+
+model version_groups {
+  id                    Int                     @default(autoincrement()) @id
+  generation_id         generations
+  pokedex_id            pokedexes
+  versions              versions[]
+  encounter_slots       encounter_slots[]
+  move_effect_changelog move_effect_changelog[]
+  ability_changelog     ability_changelog[]
+  pokemon_forms         pokemon_forms[]
+}
+
+model location_game_indices {
+  game_index    Int
+  /// This used to be part of a relation to generations
+  generation_id Int
+  /// This used to be part of a relation to locations
+  location_id   Int
+
+  @@id([location_id, generation_id, game_index])
+}
+
+model nature_battle_style_preferences {
+  high_hp_preference   Int
+  low_hp_preference    Int
+  /// This used to be part of a relation to move_battle_styles
+  move_battle_style_id Int
+  /// This used to be part of a relation to natures
+  nature_id            Int
+
+  @@id([nature_id, move_battle_style_id])
+}
+
+model stat_hint_names {
+  message           String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to stat_hints
+  stat_hint_id      Int
+
+  @@id([stat_hint_id, local_language_id])
+  @@index([message], name: "ix_stat_hint_names_message")
+}
+
+model evolution_chains {
+  id                   Int               @default(autoincrement()) @id
+  baby_trigger_item_id items?
+  pokemon_species      pokemon_species[]
+}
+
+model item_flag_map {
+  /// This used to be part of a relation to item_flags
+  item_flag_id Int
+  /// This used to be part of a relation to items
+  item_id      Int
+
+  @@id([item_id, item_flag_id])
+}
+
+model nature_pokeathlon_stats {
+  max_change         Int
+  /// This used to be part of a relation to natures
+  nature_id          Int
+  /// This used to be part of a relation to pokeathlon_stats
+  pokeathlon_stat_id Int
+
+  @@id([nature_id, pokeathlon_stat_id])
+}
+
+model abilities {
+  id                Int                 @default(autoincrement()) @id
+  identifier        String
+  generation_id     generations
+  ability_changelog ability_changelog[]
+  pokemon_abilities pokemon_abilities[]
+}
+
+model nature_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to natures
+  nature_id         Int
+
+  @@id([nature_id, local_language_id])
+  @@index([name], name: "ix_nature_names_name")
+}
+
+model item_flavor_summaries {
+  flavor_summary    String?
+  /// This used to be part of a relation to items
+  item_id           Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([item_id, local_language_id])
+}
+
+model item_prose {
+  effect            String?
+  short_effect      String?
+  /// This used to be part of a relation to items
+  item_id           Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([item_id, local_language_id])
+}
+
+model item_game_indices {
+  game_index    Int
+  /// This used to be part of a relation to generations
+  generation_id Int
+  /// This used to be part of a relation to items
+  item_id       Int
+
+  @@id([item_id, generation_id])
+}
+
+model item_names {
+  name              String
+  /// This used to be part of a relation to items
+  item_id           Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([item_id, local_language_id])
+  @@index([name], name: "ix_item_names_name")
+}
+
+model ability_flavor_text {
+  flavor_text      String
+  /// This used to be part of a relation to abilities
+  ability_id       Int
+  /// This used to be part of a relation to languages
+  language_id      Int
+  /// This used to be part of a relation to version_groups
+  version_group_id Int
+
+  @@id([ability_id, version_group_id, language_id])
+}
+
+model moves {
+  accuracy                String?
+  effect_chance           Int?
+  id                      Int                    @default(autoincrement()) @id
+  identifier              String
+  power                   String
+  pp                      String?
+  priority                String
+  contest_effect_id       contest_effects?
+  contest_type_id         contest_types?
+  damage_class_id         move_damage_classes
+  effect_id               move_effects
+  generation_id           generations
+  super_contest_effect_id super_contest_effects?
+  target_id               move_targets
+  type_id                 types
+  pokemon_evolution       pokemon_evolution[]
+  machines                machines[]
+}
+
+model versions {
+  id               Int            @default(autoincrement()) @id
+  identifier       String
+  version_group_id version_groups
+  encounters       encounters[]
+}
+
+model item_flavor_text {
+  flavor_text      String
+  /// This used to be part of a relation to items
+  item_id          Int
+  /// This used to be part of a relation to languages
+  language_id      Int
+  /// This used to be part of a relation to version_groups
+  version_group_id Int
+
+  @@id([item_id, version_group_id, language_id])
+}
+
+model encounter_slots {
+  id                  Int               @default(autoincrement()) @id
+  rarity              Int?
+  slot                Int?
+  encounter_method_id encounter_methods
+  version_group_id    version_groups
+  encounters          encounters[]
+}
+
+model ability_prose {
+  effect            String?
+  short_effect      String?
+  /// This used to be part of a relation to abilities
+  ability_id        Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([ability_id, local_language_id])
+}
+
+model berries {
+  growth_time          Int
+  id                   Int            @default(autoincrement()) @id
+  max_harvest          Int
+  natural_gift_power   Int?
+  size                 Int
+  smoothness           Int
+  soil_dryness         Int
+  firmness_id          berry_firmness
+  item_id              items
+  natural_gift_type_id types?
+}
+
+model move_effect_changelog {
+  id                          Int            @default(autoincrement()) @id
+  changed_in_version_group_id version_groups
+  effect_id                   move_effects
+
+  @@unique([effect_id, changed_in_version_group_id], name: "sqlite_autoindex_move_effect_changelog_1")
+}
+
+model type_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to types
+  type_id           Int
+
+  @@id([type_id, local_language_id])
+  @@index([name], name: "ix_type_names_name")
+}
+
+model ability_names {
+  name              String
+  /// This used to be part of a relation to abilities
+  ability_id        Int
+  /// This used to be part of a relation to languages
+  local_language_id Int
+
+  @@id([ability_id, local_language_id])
+  @@index([name], name: "ix_ability_names_name")
+}
+
+model version_group_regions {
+  /// This used to be part of a relation to regions
+  region_id        Int
+  /// This used to be part of a relation to version_groups
+  version_group_id Int
+
+  @@id([version_group_id, region_id])
+}
+
+model type_efficacy {
+  damage_factor  Int
+  /// This used to be part of a relation to types
+  damage_type_id Int
+  /// This used to be part of a relation to types
+  target_type_id Int
+
+  @@id([damage_type_id, target_type_id])
+}
+
+model pokemon_species {
+  base_happiness                                                          Int
+  capture_rate                                                            Int
+  forms_switchable                                                        Boolean
+  gender_rate                                                             Int
+  has_gender_differences                                                  Boolean
+  hatch_counter                                                           Int
+  id                                                                      Int                 @default(autoincrement()) @id
+  identifier                                                              String
+  is_baby                                                                 Boolean
+  color_id                                                                pokemon_colors
+  evolution_chain_id                                                      evolution_chains?
+  evolves_from_species_id                                                 pokemon_species?    @relation("pokemon_speciesTopokemon_species_evolves_from_species_id")
+  generation_id                                                           generations?
+  growth_rate_id                                                          growth_rates
+  habitat_id                                                              pokemon_habitats?
+  shape_id                                                                pokemon_shapes
+  pokemon_species                                                         pokemon_species[]   @relation("pokemon_speciesTopokemon_species_evolves_from_species_id")
+  pokemon_evolution_pokemon_evolution_evolved_species_idTopokemon_species pokemon_evolution[] @relation("pokemon_evolution_evolved_species_idTopokemon_species")
+  pokemon_evolution_pokemon_evolution_party_species_idTopokemon_species   pokemon_evolution[] @relation("pokemon_evolution_party_species_idTopokemon_species")
+  pokemon_evolution_pokemon_evolution_trade_species_idTopokemon_species   pokemon_evolution[] @relation("pokemon_evolution_trade_species_idTopokemon_species")
+  pokemon                                                                 pokemon[]
+}
+
+model ability_changelog {
+  id                          Int            @default(autoincrement()) @id
+  ability_id                  abilities
+  changed_in_version_group_id version_groups
+}
+
+model ability_changelog_prose {
+  effect               String
+  /// This used to be part of a relation to ability_changelog
+  ability_changelog_id Int
+  /// This used to be part of a relation to languages
+  local_language_id    Int
+
+  @@id([ability_changelog_id, local_language_id])
+}
+
+model pokemon_species_flavor_text {
+  flavor_text String
+  /// This used to be part of a relation to languages
+  language_id Int
+  /// This used to be part of a relation to pokemon_species
+  species_id  Int
+  /// This used to be part of a relation to versions
+  version_id  Int
+
+  @@id([species_id, version_id, language_id])
+}
+
+model move_meta {
+  ailment_chance   Int
+  crit_rate        Int
+  flinch_chance    Int
+  healing          Int
+  max_hits         Int?
+  max_turns        Int?
+  min_hits         Int?
+  min_turns        Int?
+  recoil           Int
+  stat_chance      Int
+  meta_ailment_id  move_meta_ailments
+  meta_category_id move_meta_categories
+  /// This used to be part of a relation to moves
+  move_id          Int                  @default(autoincrement()) @id
+
+  @@index([healing], name: "ix_move_meta_healing")
+  @@index([stat_chance], name: "ix_move_meta_stat_chance")
+  @@index([ailment_chance], name: "ix_move_meta_ailment_chance")
+  @@index([crit_rate], name: "ix_move_meta_crit_rate")
+  @@index([flinch_chance], name: "ix_move_meta_flinch_chance")
+  @@index([max_turns], name: "ix_move_meta_max_turns")
+  @@index([min_turns], name: "ix_move_meta_min_turns")
+  @@index([recoil], name: "ix_move_meta_recoil")
+  @@index([min_hits], name: "ix_move_meta_min_hits")
+  @@index([max_hits], name: "ix_move_meta_max_hits")
+}
+
+model pokemon_evolution {
+  gender                  String?
+  id                      Int                @default(autoincrement()) @id
+  minimum_beauty          Int?
+  minimum_happiness       Int?
+  minimum_level           Int?
+  relative_physical_stats Int?
+  time_of_day             String?
+  evolution_trigger_id    evolution_triggers
+  evolved_species_id      pokemon_species    @relation("pokemon_evolution_evolved_species_idTopokemon_species")
+  held_item_id            items?             @relation("itemsTopokemon_evolution_held_item_id")
+  known_move_id           moves?
+  location_id             locations?
+  party_species_id        pokemon_species?   @relation("pokemon_evolution_party_species_idTopokemon_species")
+  trade_species_id        pokemon_species?   @relation("pokemon_evolution_trade_species_idTopokemon_species")
+  trigger_item_id         items?             @relation("itemsTopokemon_evolution_trigger_item_id")
+}
+
+model contest_combos {
+  /// This used to be part of a relation to moves
+  first_move_id  Int
+  /// This used to be part of a relation to moves
+  second_move_id Int
+
+  @@id([first_move_id, second_move_id])
+}
+
+model super_contest_combos {
+  /// This used to be part of a relation to moves
+  first_move_id  Int
+  /// This used to be part of a relation to moves
+  second_move_id Int
+
+  @@id([first_move_id, second_move_id])
+}
+
+model pokemon_species_prose {
+  form_description   String?
+  /// This used to be part of a relation to languages
+  local_language_id  Int
+  /// This used to be part of a relation to pokemon_species
+  pokemon_species_id Int
+
+  @@id([pokemon_species_id, local_language_id])
+}
+
+model pokemon_dex_numbers {
+  pokedex_number Int
+  /// This used to be part of a relation to pokedexes
+  pokedex_id     Int
+  /// This used to be part of a relation to pokemon_species
+  species_id     Int
+
+  @@id([species_id, pokedex_id])
+}
+
+model location_area_encounter_rates {
+  rate                Int?
+  /// This used to be part of a relation to encounter_methods
+  encounter_method_id Int
+  /// This used to be part of a relation to location_areas
+  location_area_id    Int
+  /// This used to be part of a relation to versions
+  version_id          Int
+
+  @@id([location_area_id, encounter_method_id, version_id])
+}
+
+model move_flavor_summaries {
+  flavor_summary    String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to moves
+  move_id           Int
+
+  @@id([move_id, local_language_id])
+}
+
+model berry_flavors {
+  flavor          Int
+  /// This used to be part of a relation to berries
+  berry_id        Int
+  /// This used to be part of a relation to contest_types
+  contest_type_id Int
+
+  @@id([berry_id, contest_type_id])
+}
+
+model move_flavor_text {
+  flavor_text      String
+  /// This used to be part of a relation to languages
+  language_id      Int
+  /// This used to be part of a relation to moves
+  move_id          Int
+  /// This used to be part of a relation to version_groups
+  version_group_id Int
+
+  @@id([move_id, version_group_id, language_id])
+}
+
+model move_meta_stat_changes {
+  change  Int
+  /// This used to be part of a relation to moves
+  move_id Int
+  /// This used to be part of a relation to stats
+  stat_id Int
+
+  @@id([move_id, stat_id])
+  @@index([change], name: "ix_move_meta_stat_changes_change")
+}
+
+model pokemon_egg_groups {
+  /// This used to be part of a relation to egg_groups
+  egg_group_id Int
+  /// This used to be part of a relation to pokemon_species
+  species_id   Int
+
+  @@id([species_id, egg_group_id])
+}
+
+model version_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to versions
+  version_id        Int
+
+  @@id([version_id, local_language_id])
+  @@index([name], name: "ix_version_names_name")
+}
+
+model move_changelog {
+  accuracy                    String?
+  effect_chance               Int?
+  power                       String?
+  pp                          String?
+  /// This used to be part of a relation to version_groups
+  changed_in_version_group_id Int
+  effect_id                   move_effects?
+  /// This used to be part of a relation to moves
+  move_id                     Int
+  type_id                     types?
+
+  @@id([move_id, changed_in_version_group_id])
+}
+
+model pokemon_species_names {
+  genus              String?
+  name               String?
+  /// This used to be part of a relation to languages
+  local_language_id  Int
+  /// This used to be part of a relation to pokemon_species
+  pokemon_species_id Int
+
+  @@id([pokemon_species_id, local_language_id])
+  @@index([name], name: "ix_pokemon_species_names_name")
+}
+
+model pokemon_species_flavor_summaries {
+  flavor_summary     String?
+  /// This used to be part of a relation to languages
+  local_language_id  Int
+  /// This used to be part of a relation to pokemon_species
+  pokemon_species_id Int
+
+  @@id([pokemon_species_id, local_language_id])
+}
+
+model machines {
+  machine_number   Int
+  item_id          items
+  move_id          moves
+  /// This used to be part of a relation to version_groups
+  version_group_id Int
+
+  @@id([machine_number, version_group_id])
+}
+
+model move_effect_changelog_prose {
+  effect                   String
+  /// This used to be part of a relation to languages
+  local_language_id        Int
+  /// This used to be part of a relation to move_effect_changelog
+  move_effect_changelog_id Int
+
+  @@id([move_effect_changelog_id, local_language_id])
+}
+
+model pokemon {
+  base_experience Int
+  height          Int
+  id              Int              @default(autoincrement()) @id
+  is_default      Boolean
+  order           Int
+  weight          Int
+  species_id      pokemon_species?
+  pokemon_forms   pokemon_forms[]
+  encounters      encounters[]
+
+  @@index([is_default], name: "ix_pokemon_is_default")
+  @@index([order], name: "ix_pokemon_order")
+}
+
+model move_flag_map {
+  /// This used to be part of a relation to move_flags
+  move_flag_id Int
+  /// This used to be part of a relation to moves
+  move_id      Int
+
+  @@id([move_id, move_flag_id])
+}
+
+model move_names {
+  name              String
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to moves
+  move_id           Int
+
+  @@id([move_id, local_language_id])
+  @@index([name], name: "ix_move_names_name")
+}
+
+model pokemon_forms {
+  form_identifier                String?
+  id                             Int             @default(autoincrement()) @id
+  is_battle_only                 Boolean
+  is_default                     Boolean
+  order                          Int
+  introduced_in_version_group_id version_groups?
+  pokemon_id                     pokemon
+}
+
+model pokemon_types {
+  slot       Int
+  /// This used to be part of a relation to pokemon
+  pokemon_id Int
+  type_id    types
+
+  @@id([pokemon_id, slot])
+}
+
+model pokemon_abilities {
+  is_dream   Boolean
+  slot       Int
+  ability_id abilities
+  /// This used to be part of a relation to pokemon
+  pokemon_id Int
+
+  @@id([pokemon_id, slot])
+  @@index([is_dream], name: "ix_pokemon_abilities_is_dream")
+}
+
+model pokemon_stats {
+  base_stat  Int
+  effort     Int
+  /// This used to be part of a relation to pokemon
+  pokemon_id Int
+  /// This used to be part of a relation to stats
+  stat_id    Int
+
+  @@id([pokemon_id, stat_id])
+}
+
+model encounters {
+  id                Int             @default(autoincrement()) @id
+  max_level         Int
+  min_level         Int
+  encounter_slot_id encounter_slots
+  location_area_id  location_areas
+  pokemon_id        pokemon
+  version_id        versions
+}
+
+model pokemon_items {
+  rarity     Int
+  /// This used to be part of a relation to items
+  item_id    Int
+  /// This used to be part of a relation to pokemon
+  pokemon_id Int
+  /// This used to be part of a relation to versions
+  version_id Int
+
+  @@id([pokemon_id, version_id, item_id])
+}
+
+model pokemon_moves {
+  level                  Int?
+  order                  Int?
+  /// This used to be part of a relation to moves
+  move_id                Int
+  /// This used to be part of a relation to pokemon
+  pokemon_id             Int
+  /// This used to be part of a relation to pokemon_move_methods
+  pokemon_move_method_id Int
+  /// This used to be part of a relation to version_groups
+  version_group_id       Int
+
+  @@id([pokemon_id, version_group_id, move_id, pokemon_move_method_id, level])
+  @@index([move_id], name: "ix_pokemon_moves_move_id")
+  @@index([pokemon_id], name: "ix_pokemon_moves_pokemon_id")
+  @@index([pokemon_move_method_id], name: "ix_pokemon_moves_pokemon_move_method_id")
+  @@index([level], name: "ix_pokemon_moves_level")
+  @@index([version_group_id], name: "ix_pokemon_moves_version_group_id")
+}
+
+model pokemon_game_indices {
+  game_index    Int
+  /// This used to be part of a relation to generations
+  generation_id Int
+  /// This used to be part of a relation to pokemon
+  pokemon_id    Int
+
+  @@id([pokemon_id, generation_id])
+}
+
+model pokemon_form_pokeathlon_stats {
+  base_stat          Int
+  maximum_stat       Int
+  minimum_stat       Int
+  /// This used to be part of a relation to pokeathlon_stats
+  pokeathlon_stat_id Int
+  /// This used to be part of a relation to pokemon_forms
+  pokemon_form_id    Int
+
+  @@id([pokemon_form_id, pokeathlon_stat_id])
+}
+
+model encounter_condition_value_map {
+  /// This used to be part of a relation to encounter_condition_values
+  encounter_condition_value_id Int
+  /// This used to be part of a relation to encounters
+  encounter_id                 Int
+
+  @@id([encounter_id, encounter_condition_value_id])
+}
+
+model pokemon_form_names {
+  form_name         String?
+  pokemon_name      String?
+  /// This used to be part of a relation to languages
+  local_language_id Int
+  /// This used to be part of a relation to pokemon_forms
+  pokemon_form_id   Int
+
+  @@id([pokemon_form_id, local_language_id])
+  @@index([pokemon_name], name: "ix_pokemon_form_names_pokemon_name")
+  @@index([form_name], name: "ix_pokemon_form_names_form_name")
+}
